@@ -1,13 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
-from resources.models import Resource
+from resources.models import Course
 from django.apps import apps
 
 class Enrollment(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
-    enrolled_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=20, default='Active')
+    # Course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    Course = models.ForeignKey('resources.Course', on_delete=models.CASCADE, null=True, blank=True)
+
+    # enrolled_at = models.DateTimeField(auto_now_add=True)
+    # status = models.CharField(max_length=20, default='Active')
+
+    enrolled_on = models.DateTimeField(auto_now_add=True)
+    payment_status = models.CharField(max_length=20, default="Pending")
+
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None
@@ -16,15 +22,15 @@ class Enrollment(models.Model):
 
         if is_new:
             # Reduce seats
-            if self.resource.available_seats > 0:
-                self.resource.available_seats -= 1
-                self.resource.save()
+            if self.Course.available_seats > 0:
+                self.Course.available_seats -= 1
+                self.Course.save()
 
             # Dynamically get Invoice model
             Invoice = apps.get_model('billing', 'Invoice')
 
-            gst = (self.resource.price * 18) / 100
-            total = self.resource.price + gst
+            gst = (self.Course.price * 18) / 100
+            total = self.Course.price + gst
 
             Invoice.objects.create(
                 enrollment=self,
@@ -32,4 +38,4 @@ class Enrollment(models.Model):
             )
 
     def __str__(self):
-        return f"{self.student.username} - {self.resource.title}"
+        return f"{self.student.username} - {self.Course.title}"
