@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Available Courses</title>
+    <link rel="stylesheet" href="{% static 'css/course_list.css' %}">
+</head>
+<body>
+
+<h2 class="page-title">Available Courses</h2>
+
+<div class="course-container">
+    {% for course in courses %}
+        <div class="course-card">
+            <h3>{{ course.title }}</h3>
+            <p><strong>Category:</strong> {{ course.category }}</p>
+            <p><strong>Price:</strong> ₹{{ course.price }}</p>
+            <p><strong>Available Seats:</strong> {{ course.available_seats }}</p>
+
+            {% if course.available_seats > 0 %}
+                <!-- <a href="#" class="enroll-btn">Enroll Now</a> -->
+                 <a href="{% url 'enroll_course' course.id %}" class="enroll-btn">Enroll Now</a>
+
+            {% else %}
+                <button class="full-btn" disabled>Full</button>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No courses available.</p>
+    {% endfor %}
+</div>
+
+<script src="{% static 'js/course_list.js' %}"></script>
+</body>
+</html>
