@@ -16,9 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from dashboard.views import home
+from dashboard.views import home, login_view, signup
+from resources.views import course_list, enroll_course
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
+    path('login/', login_view, name='login'),
+    path('signup/', signup, name='signup'),
+    path('courses/', course_list, name='course_list'),
+    path('courses/enroll/<int:course_id>/', enroll_course, name='enroll_course'),
+     
 ]
+
+
+
