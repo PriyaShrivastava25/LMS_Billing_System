@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice | LMS Billing System</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Invoice #{{ invoice.id }}</h1>
+        <p>Course: {{ invoice.enrollment.Course.title }}</p>
+        <p>Total Amount: {{ invoice.total_amount }}</p>
+        <p>Payment Status: {{ invoice.enrollment.payment_status }}</p>
+        <p>Enrolled On: {{ invoice.enrollment.enrolled_on|date:"d-m-Y H:i" }}</p>
+        <a href="{% url 'student_dashboard' %}">Back to Dashboard</a>
+    </div>
+</body>
+</html>
