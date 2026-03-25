@@ -1,47 +1,32 @@
-
-# from django.shortcuts import render
-# from django.contrib.auth.decorators import login_required
-# from .models import Course
-
-# @login_required
-# def course_list(request):
-#     courses = Course.objects.all()
-#     return render(request, "course_list.html", {"courses": courses})
-
-
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Course
 from enrollments.models import Enrollment
 
-# Show all courses
 @login_required
 def course_list(request):
     courses = Course.objects.all()
     return render(request, "course_list.html", {"courses": courses})
 
 
-# Enroll in a course
 @login_required
 def enroll_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
 
-    # Check if seats are available
-    if course.available_seats > 0:
-        # Create enrollment record
-        Enrollment.objects.create(student=request.user, course=course)
+    # To check if already enrolled
+    if Enrollment.objects.filter(student=request.user, course=course).exists():
+        messages.warning(request, f"You are already enrolled in {course.title}.")
+        return redirect("student_dashboard")
 
-        # Reduce available seats
-        course.available_seats -= 1
-        course.save()
+    # To Check seat availability
+    if course.available_seats <= 0:
+        messages.error(request, f"Sorry! {course.title} is full.")
+        return redirect("course_list")
 
-        # Optional: success message
-        success_message = f"You have successfully enrolled in {course.title}!"
-        courses = Course.objects.all()
-        return render(request, "course_list.html", {"courses": courses, "success": success_message})
-    else:
-        # Optional: error message if full
-        error_message = f"Sorry! {course.title} is full."
-        courses = Course.objects.all()
-        return render(request, "course_list.html", {"courses": courses, "error": error_message})
+    Enrollment.objects.create(student=request.user, course=course)
+
+    messages.success(request, f"You have successfully enrolled in {course.title}!")
+    return redirect("student_dashboard")
+
+
