@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from dashboard.views import home, login_view, signup
+from dashboard.views import home, login_view, signup, student_dashboard, logout_view, view_invoice
 from resources.views import course_list, enroll_course
 
 urlpatterns = [
@@ -26,7 +26,9 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('courses/', course_list, name='course_list'),
     path('courses/enroll/<int:course_id>/', enroll_course, name='enroll_course'),
-     
+    path('student-dashboard/', student_dashboard, name='student_dashboard'),
+    path('logout/', logout_view, name='logout'),
+     path('invoice/<int:invoice_id>/', view_invoice, name='view_invoice'),
 ]
 
 
