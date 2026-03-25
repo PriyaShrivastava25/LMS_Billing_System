@@ -1,35 +1,69 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Available Courses</title>
+    <meta charset="UTF-8">
+    <title>Courses | LMS Billing System</title>
     <link rel="stylesheet" href="{% static 'css/course_list.css' %}">
 </head>
 <body>
 
-<h2 class="page-title">Available Courses</h2>
+<nav class="navbar">
+    <div class="logo">LMS Billing System</div>
+    <ul class="nav-links">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'course_list' %}" class="active">Courses</a></li>
 
-<div class="course-container">
-    {% for course in courses %}
-        <div class="course-card">
-            <h3>{{ course.title }}</h3>
-            <p><strong>Category:</strong> {{ course.category }}</p>
-            <p><strong>Price:</strong> ₹{{ course.price }}</p>
-            <p><strong>Available Seats:</strong> {{ course.available_seats }}</p>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'student_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+    </ul>
+</nav>
 
-            {% if course.available_seats > 0 %}
-                <!-- <a href="#" class="enroll-btn">Enroll Now</a> -->
-                 <a href="{% url 'enroll_course' course.id %}" class="enroll-btn">Enroll Now</a>
+<section class="course-hero">
+    <h1>Explore Our Professional Courses</h1>
+    <p>Upgrade your skills with industry-ready learning programs.</p>
+</section>
 
-            {% else %}
-                <button class="full-btn" disabled>Full</button>
-            {% endif %}
+
+<section class="course-section">
+
+    {% if courses %}
+        <div class="course-grid">
+            {% for course in courses %}
+            <div class="course-card">
+
+                <div class="course-header">
+                    <h3>{{ course.title }}</h3>
+                    <span class="category">{{ course.category }}</span>
+                </div>
+
+                <div class="course-body">
+                    <p class="price">₹ {{ course.price }}</p>
+                    <p class="seats">
+                        Available Seats:
+                        <strong>{{ course.available_seats }}</strong>
+                    </p>
+                </div>
+
+                <div class="course-footer">
+                    {% if course.available_seats > 0 %}
+                        <a href="{% url 'enroll_course' course.id %}" class="btn-enroll">Enroll Now</a>
+                    {% else %}
+                        <button class="btn-disabled" disabled>Full</button>
+                    {% endif %}
+                </div>
+
+            </div>
+            {% endfor %}
         </div>
-    {% empty %}
-        <p>No courses available.</p>
-    {% endfor %}
-</div>
+    {% else %}
+        <p class="no-course">No courses available right now.</p>
+    {% endif %}
 
-<script src="{% static 'js/course_list.js' %}"></script>
+</section>
 </body>
 </html>

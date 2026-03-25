@@ -14,18 +14,72 @@
             LMS Billing System
         </div>
         <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Courses</a></li>
-            <li><a href="#">Enroll</a></li>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Login</a></li>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'course_list' %}">Courses</a></li>
+            <li><a href="{% url 'student_dashboard' %}">Dashboard</a></li>
+            
         </ul>
     </nav>
 
-    <!-- Main Content -->
-    <div class="content">
-        
-    </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>LMS Billing & Resource Management System</h1>
+            <p>
+                Manage courses as structured resources with pricing, seat limits,
+                automated enrollment, invoice generation, GST calculation,
+                and dashboard analytics.
+            </p>
+            <div class="hero-buttons">
+                <a href="{% url 'signup' %}" class="btn-primary">Get Started</a>
+                <a href="{% url 'login' %}" class="btn-secondary">Login</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Core Modules</h2>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <h3>Course Resource Management</h3>
+                <p>
+                    Define pricing, manage seat availability,
+                    and track course capacity automatically.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Automated Billing</h3>
+                <p>
+                    Generate invoices instantly with GST calculation
+                    and payment status tracking.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Enrollment Automation</h3>
+                <p>
+                    When a student enrolls, seat count updates automatically
+                    and billing workflow triggers.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Revenue Analytics</h3>
+                <p>
+                    View total revenue, monthly reports,
+                    top-selling and low enrollment courses.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>© 2026 LMS Billing & Resource Management System </p>
+    </footer>
 
     <script src="{% static 'js/main.js' %}"></script>
 </body>
