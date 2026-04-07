@@ -76,7 +76,7 @@ def student_dashboard(request):
     if request.user.is_staff or request.user.is_superuser:
         return redirect("/admin/")
 
-    student = request.user
+    
     
     student = request.user
     enrollments = Enrollment.objects.filter(
@@ -96,7 +96,7 @@ def student_dashboard(request):
             'gst': gst,
             'total': total,
             'payment_status': e.payment_status,
-            'enrolled_on': e.enrolled_on,
+            'enrolled_on': e.enrollment_date,
             'start_date': getattr(e.course, 'start_date', None),
             'invoice_id': invoice.id if invoice else None
         })

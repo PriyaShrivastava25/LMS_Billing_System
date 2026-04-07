@@ -4,16 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Invoice | LMS Billing System</title>
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/invoice.css' %}">
 </head>
 <body>
-    <div class="dashboard-container">
-        <h1>Invoice #{{ invoice.id }}</h1>
-        <p>Course: {{ invoice.enrollment.Course.title }}</p>
-        <p>Total Amount: {{ invoice.total_amount }}</p>
-        <p>Payment Status: {{ invoice.enrollment.payment_status }}</p>
-        <p>Enrolled On: {{ invoice.enrollment.enrolled_on|date:"d-m-Y H:i" }}</p>
-        <a href="{% url 'student_dashboard' %}">Back to Dashboard</a>
+    <div class="invoice-container">
+
+    <div class="invoice-box">
+
+        <h1>Invoice</h1>
+        <p class="invoice-id">#{{ invoice.id }}</p>
+
+        <hr>
+
+        <div class="invoice-details">
+            <p><strong>Course:</strong> {{ invoice.enrollment.course.title }}</p>
+            <p><strong>Student:</strong> {{ invoice.enrollment.student.first_name }}</p>
+            <p><strong>Date:</strong> {{ invoice.enrollment.enrollment_date|date:"d-m-Y H:i" }}</p>
+        </div>
+
+        <hr>
+
+        <div class="amount-box">
+            <p>Base Amount: ₹{{ invoice.base_amount }}</p>
+            <p>GST (18%): ₹{{ invoice.gst_amount }}</p>
+            <p class="total">Total: ₹{{ invoice.total_amount }}</p>
+        </div>
+
+        <div class="status">
+            Status: 
+            <span class="{% if invoice.payment_status == 'Paid' %}paid{% else %}pending{% endif %}">
+                {{ invoice.payment_status }}
+            </span>
+        </div>
+        <button onclick="window.print()" class="btn">Print Invoice</button>
+        <a href="{% url 'download_invoice' invoice.id %}" class="btn">
+    Download PDF
+</a>
+
+
+        <a href="{% url 'student_dashboard' %}" class="btn">Back to Dashboard</a>
+
+
     </div>
+
+</div>
+
 </body>
 </html>

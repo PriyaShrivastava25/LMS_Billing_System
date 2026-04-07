@@ -1,3 +1,9 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f9;
+    margin: 0;
+}
+
 .course-container {
     display: flex;
     gap: 20px;
@@ -18,26 +24,31 @@
 
 .btn {
     display: inline-block;
-    padding: 8px 12px;
+    padding: 8px 8px;
     background: #1e3c72;
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1e293b;
+    background: linear-gradient(90deg, #1e293b, #334155);
     padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .logo {
     color: white;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
 }
+
 
 .nav-links {
     list-style: none;
@@ -48,34 +59,44 @@
 .nav-links li a {
     color: white;
     text-decoration: none;
-    font-size: 15px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: 0.3s;
 }
 
 .nav-links li a:hover {
-    color: #38bdf8;
+    background: #38bdf8;
+    color: black;
+}
+
+.nav-links a.active {
+    background: #38bdf8;
+    color: black;
 }
 
 
 .course-hero {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background: linear-gradient(135deg, #1e293b, #334155);
     color: white;
     text-align: center;
-    padding: 60px 20px;
+    padding: 70px 20px;
+    border-bottom: 4px solid #38bdf8;
 }
 
 .course-hero h1 {
-    font-size: 32px;
+    font-size: 36px;
     margin-bottom: 10px;
 }
 
 .course-hero p {
     font-size: 16px;
-    opacity: 0.9;
+    opacity: 0.85;
 }
 
 .course-section {
-    padding: 50px 80px;
+    padding: 40px 60px;
 }
+
 
 .course-grid {
     display: grid;
@@ -85,15 +106,19 @@
 
 .course-card {
     background: white;
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 25px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    transition: 0.3s ease;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
 }
 
 .course-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
+    border: 1px solid #38bdf8;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
 }
+
 
 .course-header {
     margin-bottom: 15px;
@@ -104,17 +129,22 @@
 }
 
 .category {
-    font-size: 12px;
-    background: #e2e8f0;
-    padding: 4px 8px;
+    font-size: 11px;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 5px 10px;
     border-radius: 20px;
+    font-weight: bold;
 }
 
+
 .price {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
-    color: #1e3c72;
+    color: #1e293b;
+    margin-top: 10px;
 }
+
 
 .seats {
     margin-top: 8px;
@@ -125,21 +155,29 @@
     margin-top: 20px;
 }
 
+button, .btn, .btn-enroll {
+    cursor: pointer;
+}
+
+
 .btn-enroll {
     display: inline-block;
     width: 100%;
-    padding: 10px;
+    padding: 6px;
     text-align: center;
-    background: #1e3c72;
+    background: linear-gradient(90deg, #1e293b, #38bdf8);
     color: white;
-    border-radius: 6px;
+    border-radius: 8px;
     text-decoration: none;
+    font-weight: bold;
     transition: 0.3s;
 }
 
 .btn-enroll:hover {
-    background: #2a5298;
+    transform: scale(1.03);
+    opacity: 0.9;
 }
+
 
 .btn-disabled {
     width: 100%;
@@ -154,6 +192,17 @@
     font-size: 18px;
 }
 
-.nav-links a.active {
+/* .nav-links a.active {
     color: #38bdf8;
+} */
+
+
+@media (max-width: 768px) {
+    .course-section {
+        padding: 20px;
+    }
+
+    .course-hero h1 {
+        font-size: 26px;
+    }
 }

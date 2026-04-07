@@ -13,14 +13,17 @@
     <ul class="nav-links">
         <li><a href="{% url 'home' %}">Home</a></li>
         <li><a href="{% url 'course_list' %}">Courses</a></li>
-        <li><a href="{% url 'student_dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'student_dashboard' %}" class="active">Dashboard</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
 </nav>
 
 <div class="dashboard-container">
-    <h1>Welcome, {{ student_name }}</h1>
-    <h2>My Enrollments & Invoices</h2>
+    <div class="welcome-card">
+    <h1> Welcome, {{ student_name }}</h1>
+    <p>Track your courses, payments and invoices in one place.</p>
+</div>
+
 
     <table>
         <thead>
@@ -42,12 +45,18 @@
                 <td>{{ e.price }}</td>
                 <!-- <td>{{ e.gst }}</td> -->
                 <td>{{ e.total }}</td>
-                <td>{{ e.payment_status }}</td>
+                <td>
+                   {% if e.payment_status == "Paid" %}
+                   <span class="status paid">Paid</span>
+                   {% else %}
+                <span class="status pending">Pending</span>
+                {% endif %}
+                </td>
                 <td>{{ e.enrolled_on|date:"d-m-Y H:i" }}</td>
                 <td>{% if e.start_date %}{{ e.start_date|date:"d-m-Y" }}{% else %}-{% endif %}</td>
                 <td>
                     {% if e.invoice_id %}
-                    <a href="{% url 'view_invoice' e.invoice_id %}">View</a>
+                    <a href="{% url 'view_invoice' e.invoice_id %}" class="btn">View</a>
                     {% else %}-{% endif %}
                 </td>
             </tr>
