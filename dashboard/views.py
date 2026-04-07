@@ -76,8 +76,6 @@ def student_dashboard(request):
     if request.user.is_staff or request.user.is_superuser:
         return redirect("/admin/")
 
-    
-    
     student = request.user
     enrollments = Enrollment.objects.filter(
         student=student
@@ -107,42 +105,14 @@ def student_dashboard(request):
     }
 
     return render(request, 'student_dashboard.html', context)
+
 @login_required
 def course_list(request):
     courses = Course.objects.all()
-
     context = {
         "courses": courses
     }
-
     return render(request, "course_list.html", context)
-
-
-
-@login_required
-def enroll_course(request, course_id):
-
-    course = get_object_or_404(Course, id=course_id)
-
-    # Check if already enrolled
-    if Enrollment.objects.filter(student=request.user, course=course).exists():
-        messages.warning(request, "You are already enrolled in this course.")
-        return redirect("student_dashboard")
-
-    # Check seat availability
-    if course.available_seats <= 0:
-        messages.error(request, "Seats are full for this course.")
-        return redirect("course_list")
-
-    # Create enrollment
-    Enrollment.objects.create(
-        student=request.user,
-        course=course
-    )
-
-    messages.success(request, "Enrollment successful!")
-    return redirect("student_dashboard")
-
 
 @login_required
 def view_invoice(request, invoice_id):
