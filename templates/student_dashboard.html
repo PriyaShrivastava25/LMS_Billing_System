@@ -8,6 +8,17 @@
 </head>
 <body>
 
+  {% if messages %}
+    <div id="message-container">
+      {% for message in messages %}
+        <div class="popup-message {{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+
 <nav class="navbar">
     <div class="logo">LMS Billing System</div>
     <ul class="nav-links">
