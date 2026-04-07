@@ -14,3 +14,13 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
+
+
+setTimeout(function() {
+    let messages = document.querySelectorAll('.popup-message');
+    messages.forEach(function(msg) {
+        msg.style.display = 'none';
+    });
+}, 3000);
+
