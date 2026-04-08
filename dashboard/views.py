@@ -82,10 +82,12 @@ def student_dashboard(request):
     ).select_related('course')
 
     enrollment_data = []
+    total_spent = 0
 
     for e in enrollments:
         gst = (e.course.price * 18) / 100
         total = e.course.price + gst
+        total_spent += total
         invoice = Invoice.objects.filter(enrollment=e).first()
 
         enrollment_data.append({
@@ -101,10 +103,14 @@ def student_dashboard(request):
 
     context = {
         'student_name': student.first_name,
-        'enrollments': enrollment_data
+        'enrollments': enrollment_data,
+        'total_courses' : enrollments.count(),
+        'total_spent' : total_spent
     }
 
     return render(request, 'student_dashboard.html', context)
+
+
 
 @login_required
 def course_list(request):

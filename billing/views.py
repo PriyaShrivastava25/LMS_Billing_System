@@ -17,19 +17,18 @@ def download_invoice(request, invoice_id):
 
     data = []
 
-    # HEADER
+    
     data.append(["INVOICE DETAILS", ""])
 
-    # INFO ROWS
-    data.append(["Invoice ID", f"INV-{invoice.id}"])
+    
+    data.append(["Invoice ID", f"INV-2026-{str(invoice.id).zfill(4)}"])
     data.append(["Student", invoice.enrollment.student.first_name])
     data.append(["Course", invoice.enrollment.course.title])
     data.append(["Enrollment Date", str(invoice.enrollment.enrollment_date)])
 
-    # EMPTY SPACE
+    
     data.append(["", ""])
 
-    # AMOUNT TABLE HEADER
     data.append(["Description", "Amount (₹)"])
 
     data.append(["Course Fee", str(invoice.base_amount)])
