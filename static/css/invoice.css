@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, sans-serif;
     background: #f4f6f9;
     margin: 0;
 }
@@ -12,36 +12,37 @@ body {
 
 .invoice-box {
     background: white;
-    width: 400px;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+    width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
-.invoice-box h1 {
+.invoice-header {
     text-align: center;
-    margin-bottom: 5px;
 }
 
 .invoice-id {
-    text-align: center;
-    color: gray;
-    margin-bottom: 20px;
+    color: #555;
+    margin-top: 5px;
 }
 
-.invoice-details p,
-.amount-box p {
+.invoice-details p {
     margin: 8px 0;
 }
 
 .amount-box {
-    margin-top: 20px;
+    margin-top: 15px;
+}
+
+.amount-box p {
+    margin: 5px 0;
 }
 
 .total {
-    font-size: 18px;
     font-weight: bold;
-    margin-top: 10px;
+    font-size: 18px;
+    color: #1e3c72;
 }
 
 .status {
@@ -49,28 +50,36 @@ body {
     font-weight: bold;
 }
 
-.status .paid {
+.paid {
     color: green;
 }
 
-.status .pending {
+.pending {
     color: red;
 }
 
-.btn {
-    display: block;
-    text-align: center;
+.invoice-actions {
     margin-top: 20px;
-    padding: 10px;
-    background: #1e293b;
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    background: #1e3c72;
     color: white;
+    padding: 8px 12px;
     text-decoration: none;
-    border-radius: 6px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
 }
 
 .btn:hover {
-    background: #38bdf8;
-    color: black;
+    background: #2a5298;
+}
+
+.btn.secondary {
+    background: gray;
 }
 
 @media print {
@@ -89,4 +98,5 @@ body {
     .invoice-box {
         box-shadow: none;
     }
+
 }
