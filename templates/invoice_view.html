@@ -7,43 +7,57 @@
     <link rel="stylesheet" href="{% static 'css/invoice.css' %}">
 </head>
 <body>
-    <div class="invoice-container">
+
+<div class="invoice-container">
 
     <div class="invoice-box">
 
-        <h1>Invoice</h1>
-        <p class="invoice-id">#{{ invoice.id }}</p>
+        <!-- HEADER -->
+        <div class="invoice-header">
+            <h1>LMS Billing System</h1>
+            <p class="invoice-id">
+                Invoice No: <strong>INV-2026-{{ invoice.id|stringformat:"04d" }}</strong>
+            </p>
+        </div>
 
         <hr>
 
+        <!-- DETAILS -->
         <div class="invoice-details">
-            <p><strong>Course:</strong> {{ invoice.enrollment.course.title }}</p>
             <p><strong>Student:</strong> {{ invoice.enrollment.student.first_name }}</p>
+            <p><strong>Course:</strong> {{ invoice.enrollment.course.title }}</p>
             <p><strong>Date:</strong> {{ invoice.enrollment.enrollment_date|date:"d-m-Y H:i" }}</p>
         </div>
 
         <hr>
 
+        <!-- AMOUNT -->
         <div class="amount-box">
             <p>Base Amount: ₹{{ invoice.base_amount }}</p>
             <p>GST (18%): ₹{{ invoice.gst_amount }}</p>
             <p class="total">Total: ₹{{ invoice.total_amount }}</p>
         </div>
 
+        <!-- STATUS -->
         <div class="status">
-            Status: 
+            Status:
             <span class="{% if invoice.payment_status == 'Paid' %}paid{% else %}pending{% endif %}">
                 {{ invoice.payment_status }}
             </span>
         </div>
-        <button onclick="window.print()" class="btn">Print Invoice</button>
-        <a href="{% url 'download_invoice' invoice.id %}" class="btn">
-    Download PDF
-</a>
 
+        <!-- BUTTONS -->
+        <div class="invoice-actions">
+            <button onclick="window.print()" class="btn">Print</button>
 
-        <a href="{% url 'student_dashboard' %}" class="btn">Back to Dashboard</a>
+            <a href="{% url 'download_invoice' invoice.id %}" class="btn">
+                Download PDF
+            </a>
 
+            <a href="{% url 'student_dashboard' %}" class="btn secondary">
+                Back
+            </a>
+        </div>
 
     </div>
 

@@ -35,6 +35,21 @@
     <p>Track your courses, payments and invoices in one place.</p>
 </div>
 
+<!-- STATS CARDS -->
+<div class="stats-container">
+
+    <div class="stat-card">
+        <h3>Total Courses</h3>
+        <p>{{ total_courses }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Total Spent</h3>
+        <p>₹ {{ total_spent }}</p>
+    </div>
+
+</div>
+
 
     <table>
         <thead>
@@ -73,7 +88,13 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="8">No enrollments yet.</td>
+                <td colspan="7">
+                    <div class="empty-state">
+                        <h3>No enrollments yet </h3>
+                        <p>Start learning by enrolling in a course.</p>
+                        <a href="{% url 'course_list' %}" class="btn">Browse Courses</a>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

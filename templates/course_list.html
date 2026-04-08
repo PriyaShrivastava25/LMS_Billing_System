@@ -28,38 +28,35 @@
     <p>Upgrade your skills with industry-ready learning programs.</p>
 </section>
 
-
+<!-- FILTER -->
 <div class="filter-bar">
-
     <form method="GET">
 
-        <!-- Search -->
         <input type="text" name="search" placeholder="Search courses..." value="{{ request.GET.search }}">
 
-    <select name="category">
-    <option value="">All Categories</option>
-    <option value="Programming" {% if request.GET.category == "Programming" %}selected{% endif %}>Programming</option>
-    <option value="Data Science" {% if request.GET.category == "Data Science" %}selected{% endif %}>Data Science</option>
-    <option value="Business" {% if request.GET.category == "Business" %}selected{% endif %}>Business</option>
-    </select>
-   
-    <select name="price">
-    <option value="">All Prices</option>
-    <option value="low" {% if request.GET.price == "low" %}selected{% endif %}>Below ₹1000</option>
-    <option value="mid" {% if request.GET.price == "mid" %}selected{% endif %}>₹1000 - ₹5000</option>
-    <option value="high" {% if request.GET.price == "high" %}selected{% endif %}>Above ₹5000</option>
-    </select>
- <button type="submit">Apply</button>
+        <select name="category">
+            <option value="">All Categories</option>
+            <option value="Programming" {% if request.GET.category == "Programming" %}selected{% endif %}>Programming</option>
+            <option value="Data Science" {% if request.GET.category == "Data Science" %}selected{% endif %}>Data Science</option>
+            <option value="Business" {% if request.GET.category == "Business" %}selected{% endif %}>Business</option>
+        </select>
 
+        <select name="price">
+            <option value="">All Prices</option>
+            <option value="low" {% if request.GET.price == "low" %}selected{% endif %}>Below ₹1000</option>
+            <option value="mid" {% if request.GET.price == "mid" %}selected{% endif %}>₹1000 - ₹5000</option>
+            <option value="high" {% if request.GET.price == "high" %}selected{% endif %}>Above ₹5000</option>
+        </select>
+
+        <button type="submit">Apply</button>
     </form>
-
 </div>
-
 
 <section class="course-section">
 
     {% if courses %}
         <div class="course-grid">
+
             {% for course in courses %}
             <div class="course-card">
 
@@ -77,22 +74,34 @@
                 </div>
 
                 <div class="course-footer">
-                    {% if course.available_seats > 0 %}
-                        <a href="{% url 'enroll_course' course.id %}" class="btn-enroll">Enroll Now</a>
+
+                    {% if course.available_seats == 0 %}
+                        <button class="btn-disabled" disabled> Course Full</button>
+
+                    {% elif course.id in enrolled_course_ids %}
+                        <button class="btn-enrolled" disabled>Enrolled</button>
+
                     {% else %}
-                        <button class="btn-disabled" disabled>Full</button>
+                        <a href="{% url 'enroll_course' course.id %}" class="btn-enroll">Enroll Now</a>
                     {% endif %}
+
                 </div>
 
             </div>
             {% endfor %}
+
         </div>
+
     {% else %}
-        <p class="no-course">No courses available right now.</p>
+        <div class="empty-state">
+            <h3>No courses found 😕</h3>
+            <p>Try changing your search or filters.</p>
+        </div>
     {% endif %}
 
 </section>
 
+<!-- PAGINATION -->
 <div class="pagination">
 
     {% if courses.has_previous %}
@@ -101,7 +110,7 @@
         {% if request.GET.category %}&category={{ request.GET.category }}{% endif %}
         {% if request.GET.price %}&price={{ request.GET.price }}{% endif %}
         ">
-            Previous
+            ← Previous
         </a>
     {% endif %}
 
@@ -115,10 +124,11 @@
         {% if request.GET.category %}&category={{ request.GET.category }}{% endif %}
         {% if request.GET.price %}&price={{ request.GET.price }}{% endif %}
         ">
-            Next
+            Next →
         </a>
     {% endif %}
 
 </div>
+
 </body>
 </html>
