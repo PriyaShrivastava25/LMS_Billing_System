@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enrollments</title>
+    <link rel="stylesheet" href="{% static 'css/admin_enrollments.css' %}">
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+    <a href="{% url 'manage_courses' %}">Courses</a>
+    <a href="{% url 'manage_enrollments' %}" class="active">Enrollments</a>
+    <a href="{% url 'manage_invoices' %}">Invoices</a>
+</div>
+
+<div class="main">
+
+    <div class="header">
+        <h1>Enrollment Management</h1>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-box">
+        <form method="GET">
+            <input type="text" name="student" placeholder="Search by student"
+                   value="{{ request.GET.student }}">
+
+            <input type="text" name="course" placeholder="Search by course"
+                   value="{{ request.GET.course }}">
+
+            <button type="submit">Apply</button>
+        </form>
+    </div>
+
+   
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Enrollment Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for e in enrollments %}
+            <tr>
+                <td>{{ e.student.username }}</td>
+                <td>{{ e.course.title }}</td>
+                <td>₹{{ e.course.price }}</td>
+
+                <td>
+                    {% if e.payment_status == "Paid" %}
+                        <span class="status paid">Paid</span>
+                    {% else %}
+                        <span class="status pending">Pending</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ e.enrollment_date|date:"d-m-Y H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="empty">
+                    No enrollments found
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

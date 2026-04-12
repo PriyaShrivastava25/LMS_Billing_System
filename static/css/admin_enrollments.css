@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    display: flex;
+}
+
+.sidebar {
+    width: 220px;
+    height: 150vh;
+    background: #1e293b;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 10px 0;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.sidebar a:hover {
+    background: #38bdf8;
+    color: black;
+}
+
+.sidebar a.active {
+    background: #38bdf8;
+    color: black;
+}
+
+
+.main {
+    flex: 1;
+    padding: 30px;
+    background: #f4f6f9;
+}
+
+
+.header {
+    margin-bottom: 20px;
+}
+
+
+.filter-box {
+    background: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.filter-box form {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-box input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.filter-box button {
+    background: #1e293b;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th {
+    background: #1e293b;
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+    background: #f1f5f9;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.paid {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.pending {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+.empty {
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+    color: gray;
+}

@@ -1,0 +1,17 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/admin_form.css' %}">
+
+<div class="form-container">
+    <h2>Edit Course</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="title" value="{{ course.title }}">
+        <input type="number" name="price" value="{{ course.price }}">
+        <input type="number" name="total_seats" value="{{ course.total_seats }}">
+        <input type="text" name="category" value="{{ course.category }}">
+
+        <button type="submit">Update Course</button>
+    </form>
+</div>

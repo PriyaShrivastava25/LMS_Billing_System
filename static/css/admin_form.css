@@ -1,0 +1,45 @@
+body {
+    background: #f4f6f9;
+    font-family: Arial;
+}
+
+.form-container {
+    width: 400px;
+    margin: 80px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+form input:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+form button {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(90deg, #1e293b, #38bdf8);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+form button:hover {
+    opacity: 0.9;
+}

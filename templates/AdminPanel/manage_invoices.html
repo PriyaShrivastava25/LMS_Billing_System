@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Invoice</title>
+
+    <link rel="stylesheet" href="{% static 'css/admin_courses.css' %}">
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+    <a href="{% url 'manage_courses' %}">Courses</a>
+    <a href="{% url 'manage_enrollments' %}">Enrollments</a>
+    <a href="{% url 'manage_invoices' %}" class="active">Invoices</a>
+</div>
+
+<div class="main">
+
+    <h1>Invoice Management</h1>
+
+    <!-- FILTER -->
+    <form method="GET">
+        <select name="status">
+            <option value="">All</option>
+            <option value="Paid">Paid</option>
+            <option value="Pending">Pending</option>
+        </select>
+        <button>Filter</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Invoice ID</th>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>View</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in invoices %}
+            <tr>
+                <td>INV-{{ i.id }}</td>
+                <td>{{ i.enrollment.student.username }}</td>
+                <td>{{ i.enrollment.course.title }}</td>
+                <td>₹{{ i.total_amount }}</td>
+
+                <td>
+                    {% if i.enrollment.payment_status == "Paid" %}
+                        <span class="paid">Paid</span>
+                    {% else %}
+                        <span class="pending">Pending</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a href="{% url 'view_invoice' i.id %}">View</a>
+                </td>
+
+                <td>
+                    <a href="{% url 'download_invoice' i.id %}">PDF</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">No invoices found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
