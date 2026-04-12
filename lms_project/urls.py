@@ -19,6 +19,7 @@ from django.urls import path
 from dashboard.views import home, login_view, signup, student_dashboard, logout_view, view_invoice
 from resources.views import course_list, enroll_course
 from billing.views import download_invoice
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
      path('invoice/<int:invoice_id>/', view_invoice, name='view_invoice'),
      path('download-invoice/<int:invoice_id>/', download_invoice, name='download_invoice'),
+     path('adminpanel/', include('adminpanel.urls')),
 ]
 
 

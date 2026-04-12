@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'billing',
     'enrollments',
     'dashboard',
+    'adminpanel',
  
 ]
 
