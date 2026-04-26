@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/analytics.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+    <a href="{% url 'manage_courses' %}">Courses</a>
+    <a href="{% url 'manage_enrollments' %}">Enrollments</a>
+    <a href="{% url 'manage_invoices' %}">Invoices</a>
+    <a href="{% url 'analytics_dashboard' %}" class="active">Analytics</a>
+</div>
+
+<div class="main">
+
+    <h1>Analytics Dashboard</h1>
+
+    <!-- FILTER -->
+    <div class="filter-wrapper">
+        <form method="GET" class="date-filter">
+            <input type="date" name="start_date" value="{{ start_date }}">
+            <input type="date" name="end_date" value="{{ end_date }}">
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+        <div class="kpi revenue-card">
+            <h3>Total Revenue</h3>
+            <p>₹{{ total_revenue }}</p>
+
+            <div class="badge-container">
+                <span class="badge">Top Category: {{ top_category }}</span>
+
+                {% if top_courses %}
+                    <span class="badge success"> Best Course: {{ top_courses.0.title }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-grid">
+
+        <div class="chart-box">
+            <h3>Monthly Revenue</h3>
+            <canvas id="revenueChart"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>Course Distribution</h3>
+            <canvas id="courseChart"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>Revenue by Category</h3>
+            <canvas id="categoryChart"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>Top Courses</h3>
+            <canvas id="topCoursesChart"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const months = JSON.parse('{{ months|escapejs }}');
+const revenue = JSON.parse('{{ revenue|escapejs }}');
+
+new Chart(document.getElementById('revenueChart'), {
+    type: 'bar',
+    data: {
+        labels: months,
+        datasets: [{
+            label: 'Revenue',
+            data: revenue,
+            backgroundColor: '#38bdf8'
+        }]
+    },
+    options: {
+        animation: { duration: 1500 }
+    }
+});
+
+const courseLabels = JSON.parse('{{ course_labels|escapejs }}');
+const courseCounts = JSON.parse('{{ course_counts|escapejs }}');
+
+new Chart(document.getElementById('courseChart'), {
+    type: 'doughnut',
+    data: {
+        labels: courseLabels,
+        datasets: [{
+            data: courseCounts,
+            backgroundColor: [
+                '#38bdf8',
+                '#4ade80',
+                '#facc15',
+                '#fb7185',
+                '#a78bfa'
+            ]
+        }]
+    },
+    options: {
+        animation: { duration: 1500 }
+    }
+});
+
+const catLabels = JSON.parse('{{ category_labels|escapejs }}');
+const catRevenue = JSON.parse('{{ category_revenue|escapejs }}');
+
+new Chart(document.getElementById('categoryChart'), {
+    type: 'bar',
+    data: {
+        labels: catLabels,
+        datasets: [{
+            label: 'Revenue',
+            data: catRevenue,
+            backgroundColor: '#6366f1'
+        }]
+    },
+    options: {
+        animation: { duration: 1500 }
+    }
+});
+
+// TOP COURSES
+const topCourseLabels = JSON.parse('{{ top_course_labels|escapejs }}');
+const topCourseData = JSON.parse('{{ top_course_data|escapejs }}');
+
+if (topCourseLabels.length > 0) {
+    new Chart(document.getElementById('topCoursesChart'), {
+        type: 'bar',
+        data: {
+            labels: topCourseLabels,
+            datasets: [{
+                label: 'Enrollments',
+                data: topCourseData,
+                backgroundColor: '#4ade80'
+            }]
+        },
+        options: {
+            animation: { duration: 1500 },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+}
+</script>
+
+</body>
+</html>
