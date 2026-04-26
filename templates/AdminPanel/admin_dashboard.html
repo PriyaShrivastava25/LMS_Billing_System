@@ -11,15 +11,16 @@
 <div class="sidebar">
     <h2>Admin Panel</h2>
     <a href="{% url 'admin_dashboard' %}" class="active">Dashboard</a>
-    <a href="{% url 'manage_courses' %}" >Courses</a>
+    <a href="{% url 'manage_courses' %}">Courses</a>
     <a href="{% url 'manage_enrollments' %}">Enrollments</a>
     <a href="{% url 'manage_invoices' %}">Invoices</a>
-
+    <a href="{% url 'analytics_dashboard' %}" class="active">Analytics</a>
+    
 </div>
 
 <div class="main">
 
-    <h1>Dashboard</h1>
+    <h1>Dashboard Overview</h1>
 
     <!-- STATS CARDS -->
     <div class="cards">
@@ -39,40 +40,34 @@
             <p>{{ total_enrollments }}</p>
         </div>
 
-        <div class="card">
+        <div class="card revenue">
             <h3>Total Revenue</h3>
             <p>₹ {{ total_revenue }}</p>
         </div>
 
     </div>
 
-    <!-- TOP COURSES -->
-    <h2>Top Courses</h2>
-    <ul>
-        {% for course in top_courses %}
-            <li>{{ course.title }} - ₹{{ course.price }}</li>
-        {% endfor %}
-    </ul>
-
     <!-- RECENT ENROLLMENTS -->
     <h2>Recent Enrollments</h2>
 
-<div class="enrollment-list">
-    {% for enroll in recent_enrollments %}
-        <div class="enrollment-card">
-            <div class="enroll-left">
-                <h4>{{ enroll.student.first_name }}</h4>
-                <p>Enrolled in <strong>{{ enroll.course.title }}</strong></p>
-            </div>
+    <div class="enrollment-list">
+        {% for enroll in recent_enrollments %}
+            <div class="enrollment-card">
+                <div class="enroll-left">
+                    <h4>{{ enroll.student.first_name }}</h4>
+                    <p>{{ enroll.course.title }}</p>
+                </div>
 
-            <div class="enroll-right">
-                <span class="badge">New</span>
+                <div class="enroll-right">
+                    <span class="badge">New</span>
+                </div>
             </div>
-        </div>
-    {% empty %}
-        <p class="empty-msg">No enrollments yet.</p>
-    {% endfor %}
-</div>
+        {% empty %}
+            <div class="empty-box">
+                <p>No recent enrollments</p>
+            </div>
+        {% endfor %}
+    </div>
 
 </div>
 

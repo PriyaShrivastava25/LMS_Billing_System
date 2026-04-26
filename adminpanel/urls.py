@@ -9,6 +9,7 @@ urlpatterns = [
     path('courses/delete/<int:id>/', views.delete_course, name='delete_course'),
     path('enrollments/', views.manage_enrollments, name='manage_enrollments'),
     path('invoices/', views.manage_invoices, name='manage_invoices'),
+    path('analytics/', views.analytics_dashboard, name='analytics_dashboard'),
 
 
 
