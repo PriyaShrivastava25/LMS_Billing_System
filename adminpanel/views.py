@@ -6,16 +6,19 @@ from billing.models import Invoice
 from django.db.models import Sum, Count
 from django.contrib import messages
 from django.db.models.functions import TruncMonth
-from datetime import datetime
 import json
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q 
 
-# Admin dashboard
+# ADMIN DASHBOARD
+@login_required
 def admin_dashboard(request):
 
+    if not (request.user.is_staff or request.user.is_superuser):
+        return redirect("student_dashboard")
+
     total_users = User.objects.filter(is_superuser=False, is_staff=False).count()
-
     total_courses = Course.objects.count()
-
     total_enrollments = Enrollment.objects.count()
 
     total_revenue = Invoice.objects.aggregate(
@@ -34,14 +37,20 @@ def admin_dashboard(request):
 
     return render(request, "adminpanel/admin_dashboard.html", context)
 
-# Course List
+# MANAGE COURSES
+@login_required
 def manage_courses(request):
-    courses = Course.objects.all()
+    if not request.user.is_staff:
+        return redirect("student_dashboard")
 
+    courses = Course.objects.all()
     return render(request, "adminpanel/manage_courses.html", {"courses": courses})
 
-# Add Course
+# ADD COURSES
+@login_required
 def add_course(request):
+    if not request.user.is_staff:
+        return redirect("student_dashboard")
 
     if request.method == "POST":
         title = request.POST.get('title')
@@ -61,9 +70,13 @@ def add_course(request):
         return redirect("manage_courses")
 
     return render(request, "adminpanel/add_course.html")
-    
-# Edit Course
+
+# EDIT COURSES
+@login_required
 def edit_course(request, id):
+    if not request.user.is_staff:
+        return redirect("student_dashboard")
+
     course = get_object_or_404(Course, id=id)
 
     if request.method == "POST":
@@ -77,22 +90,29 @@ def edit_course(request, id):
 
     return render(request, "adminpanel/edit_course.html", {"course": course})
 
-
-# Delete Course
+# DELETE COURSES
+@login_required
 def delete_course(request, id):
+    if not request.user.is_staff:
+        return redirect("student_dashboard")
+
     course = get_object_or_404(Course, id=id)
     course.delete()
     return redirect("manage_courses")
 
-
-# Manage Enrollments
+# MANAGE ENROLLMENTS
+@login_required
 def manage_enrollments(request):
+    if not request.user.is_staff:
+        return redirect("student_dashboard")
 
     enrollments = Enrollment.objects.select_related('student', 'course')
-
     student = request.GET.get('student')
     if student:
-        enrollments = enrollments.filter(student__username__icontains=student)
+      enrollments = enrollments.filter(
+        Q(student__first_name__icontains=student) |
+        Q(student__last_name__icontains=student)
+    )
 
     course = request.GET.get('course')
     if course:
@@ -102,9 +122,11 @@ def manage_enrollments(request):
         "enrollments": enrollments
     })
 
-
-# Manage Invoice
+# MANAGE INVOICES
+@login_required
 def manage_invoices(request):
+    if not request.user.is_staff:
+        return redirect("student_dashboard")
 
     invoices = Invoice.objects.select_related('enrollment__student', 'enrollment__course')
 
@@ -112,13 +134,15 @@ def manage_invoices(request):
     if status:
         invoices = invoices.filter(enrollment__payment_status=status)
 
-    return render(request, "adminpanel/manage_invoices.html",
-        {"invoices": invoices
+    return render(request, "adminpanel/manage_invoices.html", {
+        "invoices": invoices
     })
 
-
-# Analytics Dashboard
+# ANALYTICS DASHBOARD
+@login_required
 def analytics_dashboard(request):
+    if not request.user.is_staff:
+        return redirect("student_dashboard")
 
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
@@ -183,26 +207,18 @@ def analytics_dashboard(request):
 
     context = {
         "total_revenue": total_revenue,
-
         "months": json.dumps(months),
         "revenue": json.dumps(revenue),
-
         "top_courses": course_stats,
-
         "course_labels": json.dumps(course_labels),
         "course_counts": json.dumps(course_counts),
-
         "category_labels": json.dumps(category_labels),
         "category_revenue": json.dumps(category_revenue),
-
         "top_category": top_category_name,
-
         "top_course_labels": json.dumps(top_course_labels),
         "top_course_data": json.dumps(top_course_data),
-
         "start_date": start_date,
         "end_date": end_date,
     }
 
     return render(request, "adminpanel/analytics_dashboard.html", context)
-

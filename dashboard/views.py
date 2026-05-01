@@ -7,11 +7,9 @@ from enrollments.models import Enrollment
 from billing.models import Invoice
 from resources.models import Course
 
-
 # HOME
 def home(request):
     return render(request, 'home.html')
-
 
 # LOGIN 
 def login_view(request):
@@ -25,9 +23,8 @@ def login_view(request):
         if user is not None:
             login(request, user)
 
-            
             if user.is_staff or user.is_superuser:
-                return redirect("/admin/")
+                return redirect("admin_dashboard")
             else:
                 return redirect("student_dashboard")
 
@@ -37,9 +34,7 @@ def login_view(request):
 
     return render(request, "login.html")
 
-
-
-#  SIGNUP 
+# SIGNUP
 def signup(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -55,31 +50,34 @@ def signup(request):
             messages.error(request, "Email already registered")
             return redirect('signup')
 
+        name_parts = name.strip().split()
+        first_name = name_parts[0]
+        last_name = " ".join(name_parts[1:]) if len(name_parts) > 1 else ""
+
         user = User.objects.create_user(
             username=email,
             email=email,
             password=password,
-            first_name=name
+            first_name=first_name,
+            last_name=last_name
         )
         user.save()
 
         messages.success(request, "Account created successfully. Please login.")
-        return redirect("login")   
+        return redirect("login")
 
     return render(request, "signup.html")
 
 
-# STUDENT DASHBOARD 
+# STUDENT DASHBOARD
 @login_required
 def student_dashboard(request):
 
     if request.user.is_staff or request.user.is_superuser:
-        return redirect("/admin/")
+        return redirect("admin_dashboard")
 
     student = request.user
-    enrollments = Enrollment.objects.filter(
-        student=student
-    ).select_related('course')
+    enrollments = Enrollment.objects.filter(student=student).select_related('course')
 
     enrollment_data = []
     total_spent = 0
@@ -88,6 +86,7 @@ def student_dashboard(request):
         gst = (e.course.price * 18) / 100
         total = e.course.price + gst
         total_spent += total
+
         invoice = Invoice.objects.filter(enrollment=e).first()
 
         enrollment_data.append({
@@ -97,40 +96,48 @@ def student_dashboard(request):
             'total': total,
             'payment_status': e.payment_status,
             'enrolled_on': e.enrollment_date,
-            'start_date': getattr(e.course, 'start_date', None),
             'invoice_id': invoice.id if invoice else None
         })
 
     context = {
         'student_name': student.first_name,
         'enrollments': enrollment_data,
-        'total_courses' : enrollments.count(),
-        'total_spent' : total_spent
+        'total_courses': enrollments.count(),
+        'total_spent': total_spent
     }
 
     return render(request, 'student_dashboard.html', context)
 
 
-
+# COURSE LIST
 @login_required
 def course_list(request):
-    courses = Course.objects.all()
-    context = {
-        "courses": courses
-    }
-    return render(request, "course_list.html", context)
 
+    if request.user.is_staff or request.user.is_superuser:
+        return redirect("admin_dashboard")
+
+    courses = Course.objects.all()
+    return render(request, "course_list.html", {"courses": courses})
+
+
+# INVOICE
 @login_required
 def view_invoice(request, invoice_id):
+
+    if request.user.is_staff or request.user.is_superuser:
+        return redirect("admin_dashboard")
+
     try:
-        invoice = Invoice.objects.get(id=invoice_id, enrollment__student=request.user)
+        invoice = Invoice.objects.get(
+            id=invoice_id,
+            enrollment__student=request.user
+        )
     except Invoice.DoesNotExist:
         return render(request, 'invoice_not_found.html')
 
     return render(request, 'invoice_view.html', {'invoice': invoice})
 
-
-#  LOGOUT 
+#LOGOUT
 def logout_view(request):
     logout(request)
     return redirect("login")

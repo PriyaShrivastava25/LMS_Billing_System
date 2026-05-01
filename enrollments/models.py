@@ -9,6 +9,7 @@ class Enrollment(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     enrollment_date = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateField(null=True, blank=True) 
 
     PAYMENT_CHOICES = [
         ('Pending', 'Pending'),
