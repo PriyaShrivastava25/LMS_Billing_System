@@ -8,16 +8,15 @@
 </head>
 <body>
 
-  {% if messages %}
-    <div id="message-container">
-      {% for message in messages %}
+{% if messages %}
+<div id="message-container">
+    {% for message in messages %}
         <div class="popup-message {{ message.tags }}">
-          {{ message }}
+            {{ message }}
         </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
+    {% endfor %}
+</div>
+{% endif %}
 
 <nav class="navbar">
     <div class="logo">LMS Billing System</div>
@@ -30,67 +29,67 @@
 </nav>
 
 <div class="dashboard-container">
+
     <div class="welcome-card">
-    <h1> Welcome, {{ student_name }}</h1>
-    <p>Track your courses, payments and invoices in one place.</p>
-</div>
-
-<!-- STATS CARDS -->
-<div class="stats-container">
-
-    <div class="stat-card">
-        <h3>Total Courses</h3>
-        <p>{{ total_courses }}</p>
+        <h1>Welcome, {{ student_name }}</h1>
+        <p>Track your courses, payments and invoices in one place.</p>
     </div>
 
-    <div class="stat-card">
-        <h3>Total Spent</h3>
-        <p>₹ {{ total_spent }}</p>
+    <div class="stats-container">
+        <div class="stat-card">
+            <h3>Total Courses</h3>
+            <p>{{ total_courses }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Spent</h3>
+            <p>₹ {{ total_spent }}</p>
+        </div>
     </div>
-
-</div>
-
 
     <table>
         <thead>
             <tr>
                 <th>Course</th>
                 <th>Price</th>
-                <!-- <th>GST (18%)</th> -->
                 <th>Total</th>
                 <th>Payment Status</th>
                 <th>Enrolled On</th>
-                <th>Start Date</th>
                 <th>Invoice</th>
             </tr>
         </thead>
+
         <tbody>
             {% for e in enrollments %}
             <tr>
                 <td>{{ e.course_title }}</td>
                 <td>{{ e.price }}</td>
-                <!-- <td>{{ e.gst }}</td> -->
                 <td>{{ e.total }}</td>
+
                 <td>
-                   {% if e.payment_status == "Paid" %}
-                   <span class="status paid">Paid</span>
-                   {% else %}
-                <span class="status pending">Pending</span>
-                {% endif %}
+                    {% if e.payment_status == "Paid" %}
+                        <span class="status paid">Paid</span>
+                    {% else %}
+                        <span class="status pending">Pending</span>
+                    {% endif %}
                 </td>
+
                 <td>{{ e.enrolled_on|date:"d-m-Y H:i" }}</td>
-                <td>{% if e.start_date %}{{ e.start_date|date:"d-m-Y" }}{% else %}-{% endif %}</td>
+
                 <td>
                     {% if e.invoice_id %}
-                    <a href="{% url 'view_invoice' e.invoice_id %}" class="btn">View</a>
-                    {% else %}-{% endif %}
+                        <a href="{% url 'view_invoice' e.invoice_id %}" class="btn">View</a>
+                    {% else %}
+                        -
+                    {% endif %}
                 </td>
             </tr>
+
             {% empty %}
             <tr>
-                <td colspan="7">
+                <td colspan="6">
                     <div class="empty-state">
-                        <h3>No enrollments yet </h3>
+                        <h3>No enrollments yet</h3>
                         <p>Start learning by enrolling in a course.</p>
                         <a href="{% url 'course_list' %}" class="btn">Browse Courses</a>
                     </div>
@@ -99,6 +98,7 @@
             {% endfor %}
         </tbody>
     </table>
+
 </div>
 
 <script src="{% static 'js/dashboard.js' %}"></script>
