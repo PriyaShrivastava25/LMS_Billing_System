@@ -1,15 +1,19 @@
 body {
     margin: 0;
-    font-family: Arial;
+    font-family: 'Segoe UI', sans-serif;
     display: flex;
+    background: #f4f6f9;
 }
 
+
 .sidebar {
-    width: 220px;
-    height: 150vh;
+    width: 230px;
+    height: 140vh;
     background: #1e293b;
     color: white;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar h2 {
@@ -18,11 +22,12 @@ body {
 
 .sidebar a {
     display: block;
-    color: white;
+    color: #cbd5e1;
     text-decoration: none;
-    margin: 10px 0;
-    padding: 8px;
-    border-radius: 6px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    transition: 0.3s;
 }
 
 .sidebar a:hover {
@@ -35,34 +40,38 @@ body {
     color: black;
 }
 
+.logout-section {
+    margin-top: auto;
+    margin-top: 20px;
+}
+
 
 .main {
     flex: 1;
     padding: 30px;
-    background: #f4f6f9;
 }
 
-
-.header {
-    margin-bottom: 20px;
+.topbar h1 {
+    color: #1e293b;
 }
 
 
 .filter-box {
     background: white;
     padding: 15px;
-    margin-bottom: 20px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    margin: 20px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
 
 .filter-box form {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .filter-box input {
-    padding: 8px;
+    padding: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
 }
@@ -71,35 +80,50 @@ body {
     background: #1e293b;
     color: white;
     border: none;
-    padding: 8px 15px;
+    padding: 10px 18px;
     border-radius: 6px;
+    cursor: pointer;
+}
+
+.filter-box button:hover {
+    background: #38bdf8;
+    color: black;
+}
+
+
+.table-container {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
 }
 
 th {
-    background: #1e293b;
-    color: white;
+    background: #e2e8f0;
+    color: #1e293b;
+    padding: 12px;
+    font-size: 14px;
 }
 
-th, td {
+td {
     padding: 12px;
     text-align: center;
     border-bottom: 1px solid #eee;
+    color: #1e293b;
 }
 
 tr:hover {
     background: #f1f5f9;
 }
 
+
 .status {
-    padding: 5px 10px;
+    padding: 5px 12px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: bold;
@@ -119,6 +143,5 @@ tr:hover {
 .empty {
     text-align: center;
     padding: 20px;
-    font-weight: bold;
-    color: gray;
+    color: #64748b;
 }

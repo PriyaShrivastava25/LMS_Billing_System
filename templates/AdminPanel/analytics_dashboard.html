@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html>
@@ -16,18 +17,24 @@
     <a href="{% url 'manage_enrollments' %}">Enrollments</a>
     <a href="{% url 'manage_invoices' %}">Invoices</a>
     <a href="{% url 'analytics_dashboard' %}" class="active">Analytics</a>
+
+    <div class="logout-section">
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
 </div>
 
 <div class="main">
 
-    <h1>Analytics Dashboard</h1>
+    <div class="topbar">
+        <h1>Analytics Dashboard</h1>
+    </div>
 
     <!-- FILTER -->
-    <div class="filter-wrapper">
-        <form method="GET" class="date-filter">
+    <div class="filter-box">
+        <form method="GET">
             <input type="date" name="start_date" value="{{ start_date }}">
             <input type="date" name="end_date" value="{{ end_date }}">
-            <button type="submit">Filter</button>
+            <button type="submit">Apply Filter</button>
         </form>
     </div>
 
@@ -35,13 +42,14 @@
     <div class="kpi-grid">
         <div class="kpi revenue-card">
             <h3>Total Revenue</h3>
-            <p>₹{{ total_revenue }}</p>
+            
+             <p>Rs. {{ total_revenue|floatformat:2 }}</p>
 
             <div class="badge-container">
                 <span class="badge">Top Category: {{ top_category }}</span>
 
                 {% if top_courses %}
-                    <span class="badge success"> Best Course: {{ top_courses.0.title }}</span>
+                    <span class="badge success">Best Course: {{ top_courses.0.title }}</span>
                 {% endif %}
             </div>
         </div>
@@ -89,7 +97,14 @@ new Chart(document.getElementById('revenueChart'), {
         }]
     },
     options: {
-        animation: { duration: 1500 }
+        animation: { duration: 1500 },
+        plugins: {
+            legend: { labels: { color: '#e2e8f0' } }
+        },
+        scales: {
+            x: { ticks: { color: '#e2e8f0' } },
+            y: { ticks: { color: '#e2e8f0' } }
+        }
     }
 });
 
@@ -134,7 +149,7 @@ new Chart(document.getElementById('categoryChart'), {
     }
 });
 
-// TOP COURSES
+
 const topCourseLabels = JSON.parse('{{ top_course_labels|escapejs }}');
 const topCourseData = JSON.parse('{{ top_course_data|escapejs }}');
 

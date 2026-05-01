@@ -1,17 +1,48 @@
+
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/admin_form.css' %}">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Course</title>
+    <link rel="stylesheet" href="{% static 'css/admin_form.css' %}">
+</head>
 
-<div class="form-container">
-    <h2>Add New Course</h2>
+<body>
 
-    <form method="POST">
-        {% csrf_token %}
+<div class="form-wrapper">
 
-        <input type="text" name="title" placeholder="Course Title" required>
-        <input type="number" name="price" placeholder="Price (₹)" required>
-        <input type="number" name="total_seats" placeholder="Total Seats" required>
-        <input type="text" name="category" placeholder="Category" required>
+    <div class="form-card">
+        <h2>Add New Course</h2>
+        
 
-        <button type="submit">Add Course</button>
-    </form>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Course Title</label>
+                <input type="text" name="title"  placeholder="Enter course name"   required>
+            </div>
+
+            <div class="input-group">
+                <label>Price (Rs.)</label>
+                <input type="number" name="price"  placeholder="Enter price" required>
+            </div>
+
+            <div class="input-group">
+                <label>Total Seats</label>
+                <input type="number" name="total_seats"  placeholder="Enter seats" required>
+            </div>
+
+            <div class="input-group">
+                <label>Category</label>
+                <input type="text" name="category"  placeholder="e.g. Data Science" required>
+            </div>
+
+            <button type="submit">Add Course</button>
+        </form>
+    </div>
+
 </div>
+
+</body>
+</html>

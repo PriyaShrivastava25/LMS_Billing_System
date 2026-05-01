@@ -1,17 +1,48 @@
+
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/admin_form.css' %}">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Course</title>
+    <link rel="stylesheet" href="{% static 'css/admin_form.css' %}">
+</head>
 
-<div class="form-container">
-    <h2>Edit Course</h2>
+<body>
 
-    <form method="POST">
-        {% csrf_token %}
+<div class="form-wrapper">
 
-        <input type="text" name="title" value="{{ course.title }}">
-        <input type="number" name="price" value="{{ course.price }}">
-        <input type="number" name="total_seats" value="{{ course.total_seats }}">
-        <input type="text" name="category" value="{{ course.category }}">
+    <div class="form-card">
+        <h2>Edit Course</h2>
+        
 
-        <button type="submit">Update Course</button>
-    </form>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Course Title</label>
+                <input type="text" name="title" value="{{ course.title }}">
+            </div>
+
+            <div class="input-group">
+                <label>Price (Rs.)</label>
+                <input type="number" name="price" value="{{ course.price }}">
+            </div>
+
+            <div class="input-group">
+                <label>Total Seats</label>
+                <input type="number" name="total_seats" value="{{ course.total_seats }}">
+            </div>
+
+            <div class="input-group">
+                <label>Category</label>
+                <input type="text" name="category" value="{{ course.category }}">
+            </div>
+
+            <button type="submit">Update Course</button>
+        </form>
+    </div>
+
 </div>
+
+</body>
+</html>

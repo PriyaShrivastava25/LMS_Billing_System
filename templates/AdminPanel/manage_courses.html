@@ -14,17 +14,17 @@
     <a href="{% url 'manage_courses' %}" class="active">Courses</a>
     <a href="{% url 'manage_enrollments' %}">Enrollments</a>
     <a href="{% url 'manage_invoices' %}">Invoices</a>
-    <a href="{% url 'analytics_dashboard' %}" class="active">Analytics</a>
+    <a href="{% url 'analytics_dashboard' %}">Analytics</a>
 
+    <div class="logout-section">
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
 </div>
 
 <div class="main">
 
-    <div class="header">
-        <div>
-            <h1>Manage Courses</h1>
-            
-        </div>
+    <div class="topbar">
+        <h1>Manage Courses</h1>
         <a href="{% url 'add_course' %}" class="btn-add">+ Add Course</a>
     </div>
 
@@ -34,7 +34,7 @@
                 <tr>
                     <th>Course</th>
                     <th>Price</th>
-                    <th>Seats</th>
+                    <th>Total</th>
                     <th>Available</th>
                     <th>Category</th>
                     <th>Status</th>
@@ -46,7 +46,7 @@
                 {% for course in courses %}
                 <tr>
                     <td class="course-name">{{ course.title }}</td>
-                    <td>₹{{ course.price }}</td>
+                    <td>Rs. {{ course.price }}</td>
                     <td>{{ course.total_seats }}</td>
                     <td>{{ course.available_seats }}</td>
                     <td><span class="badge">{{ course.category }}</span></td>
@@ -67,7 +67,7 @@
                 {% empty %}
                 <tr>
                     <td colspan="7" class="empty-state">
-                        No courses added yet 
+                        No courses added yet
                     </td>
                 </tr>
                 {% endfor %}

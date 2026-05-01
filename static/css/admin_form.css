@@ -1,45 +1,125 @@
+
 body {
-    background: #f4f6f9;
-    font-family: Arial;
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background: linear-gradient(120deg, #1f2a44, #2c5364, #4facfe);
+    position: relative;
+    overflow: hidden;
 }
 
-.form-container {
-    width: 400px;
-    margin: 80px auto;
+
+body::before,
+body::after {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.5;
+}
+
+
+body::before {
+    background: #4facfe;
+    top: -100px;
+    left: -100px;
+}
+
+
+body::after {
+    background: #00c6ff;
+    bottom: -100px;
+    right: -100px;
+}
+
+
+
+.form-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.form-card {
+    width: 370px;
     background: white;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+
+.form-card h2 {
+    margin-bottom: 25px;
+    color: #1e293b;
     text-align: center;
+    font-size: 25px;
 }
 
-.form-container h2 {
-    margin-bottom: 20px;
+.subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 25px;
 }
 
-form input {
+
+.input-group {
+    margin-bottom: 18px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: #475569;
+}
+
+
+.input-group input {
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
     border-radius: 6px;
     border: 1px solid #ccc;
-}
-
-form input:focus {
-    border-color: #3b82f6;
     outline: none;
+    transition: 0.2s;
 }
 
-form button {
+.input-group input:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56,189,248,0.2);
+}
+
+
+button {
     width: 100%;
-    padding: 10px;
-    background: linear-gradient(90deg, #1e293b, #38bdf8);
-    color: white;
+    padding: 12px;
+    border-radius: 8px;
     border: none;
-    border-radius: 6px;
+    background: #1e293b;
+    color: white;
+    font-size: 15px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
-form button:hover {
-    opacity: 0.9;
+button:hover {
+    background: #38bdf8;
+    color: black;
+}
+
+
+@media (max-width: 500px) {
+    .form-card {
+        width: 90%;
+    }
 }

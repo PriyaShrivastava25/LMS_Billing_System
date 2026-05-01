@@ -3,9 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Manage Invoice</title>
-
-    <link rel="stylesheet" href="{% static 'css/admin_courses.css' %}">
+    <title>Invoice Management</title>
+    <link rel="stylesheet" href="{% static 'css/admin_invoices.css' %}">
 </head>
 
 <body>
@@ -17,68 +16,88 @@
     <a href="{% url 'manage_courses' %}">Courses</a>
     <a href="{% url 'manage_enrollments' %}">Enrollments</a>
     <a href="{% url 'manage_invoices' %}" class="active">Invoices</a>
-    <a href="{% url 'analytics_dashboard' %}" class="active">Analytics</a>
+    <a href="{% url 'analytics_dashboard' %}">Analytics</a>
+
+    <div class="logout-section">
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
 </div>
 
 <div class="main">
 
-    <h1>Invoice Management</h1>
+    <div class="topbar">
+        <h1>Invoice Management</h1>
+    </div>
 
     <!-- FILTER -->
-    <form method="GET">
-        <select name="status">
-            <option value="">All</option>
-            <option value="Paid">Paid</option>
-            <option value="Pending">Pending</option>
-        </select>
-        <button>Filter</button>
-    </form>
+    <div class="filter-box">
+        <form method="GET">
+            <select name="status">
+                <option value="">All Status</option>
+                <option value="Paid">Paid</option>
+                <option value="Pending">Pending</option>
+            </select>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Invoice ID</th>
-                <th>Student</th>
-                <th>Course</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>View</th>
-                <th>Download</th>
-            </tr>
-        </thead>
+            <button type="submit">Filter</button>
+        </form>
+    </div>
 
-        <tbody>
-            {% for i in invoices %}
-            <tr>
-                <td>INV-{{ i.id }}</td>
-                <td>{{ i.enrollment.student.username }}</td>
-                <td>{{ i.enrollment.course.title }}</td>
-                <td>₹{{ i.total_amount }}</td>
+    <!-- TABLE -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Invoice ID</th>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Total (Rs.)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
 
-                <td>
-                    {% if i.enrollment.payment_status == "Paid" %}
-                        <span class="paid">Paid</span>
-                    {% else %}
-                        <span class="pending">Pending</span>
-                    {% endif %}
-                </td>
+            <tbody>
+                {% for i in invoices %}
+                <tr>
+                    <td>INV-{{ i.id }}</td>
 
-                <td>
-                    <a href="{% url 'view_invoice' i.id %}">View</a>
-                </td>
+                    
+                    <td>
+                        <strong>
+                            {{ i.enrollment.student.get_full_name|default:i.enrollment.student.username }}
+                        </strong><br>
+                        <small>{{ i.enrollment.student.email }}</small>
+                    </td>
 
-                <td>
-                    <a href="{% url 'download_invoice' i.id %}">PDF</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="7">No invoices found</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    <td>{{ i.enrollment.course.title }}</td>
+
+                    <td>₹{{ i.total_amount }}</td>
+
+                    <td>
+                        {% if i.enrollment.payment_status == "Paid" %}
+                            <span class="status paid">Paid</span>
+                        {% else %}
+                            <span class="status pending">Pending</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <a href="{% url 'view_invoice' i.id %}" class="btn-view">View</a>
+                        <a href="{% url 'download_invoice' i.id %}" class="btn-pdf">PDF</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        No invoices found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 </div>
+
 </body>
 </html>

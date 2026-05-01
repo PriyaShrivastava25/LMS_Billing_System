@@ -14,66 +14,93 @@
     <a href="{% url 'manage_courses' %}">Courses</a>
     <a href="{% url 'manage_enrollments' %}" class="active">Enrollments</a>
     <a href="{% url 'manage_invoices' %}">Invoices</a>
-    <a href="{% url 'analytics_dashboard' %}" class="active">Analytics</a>
+    <a href="{% url 'analytics_dashboard' %}">Analytics</a>
+
+    <div class="logout-section">
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
 </div>
 
 <div class="main">
 
-    <div class="header">
+    <div class="topbar">
         <h1>Enrollment Management</h1>
     </div>
 
-    <!-- FILTER BAR -->
+    <!-- FILTER -->
     <div class="filter-box">
         <form method="GET">
-            <input type="text" name="student" placeholder="Search by student"
+            <input type="text" name="student" placeholder="Search student"
                    value="{{ request.GET.student }}">
 
-            <input type="text" name="course" placeholder="Search by course"
+            <input type="text" name="course" placeholder="Search course"
                    value="{{ request.GET.course }}">
 
-            <button type="submit">Apply</button>
+            <button type="submit">Filter</button>
         </form>
     </div>
 
-   
-    <table>
-        <thead>
-            <tr>
-                <th>Student</th>
-                <th>Course</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Enrollment Date</th>
-            </tr>
-        </thead>
+    <!-- TABLE -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Total (Rs.)</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
 
-        <tbody>
-            {% for e in enrollments %}
-            <tr>
-                <td>{{ e.student.username }}</td>
-                <td>{{ e.course.title }}</td>
-                <td>₹{{ e.course.price }}</td>
+            <tbody>
+    {% for e in enrollments %}
+    <tr>
 
-                <td>
-                    {% if e.payment_status == "Paid" %}
-                        <span class="status paid">Paid</span>
-                    {% else %}
-                        <span class="status pending">Pending</span>
-                    {% endif %}
-                </td>
+       
+        <td>
+            <strong>
+                {{ e.student.get_full_name|default:e.student.username }}
+            </strong><br>
+            <small>{{ e.student.email }}</small>
+        </td>
 
-                <td>{{ e.enrollment_date|date:"d-m-Y H:i" }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5" class="empty">
-                    No enrollments found
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        
+        <td>{{ e.course.title }}</td>
+
+       
+        <td>
+            {% with invoice=e.invoice.first %}
+                {% if invoice %}
+                    Rs. {{ invoice.total_amount }}
+                {% else %}
+                    Rs. {{ e.course.price }}
+                {% endif %}
+            {% endwith %}
+        </td>
+
+        
+        <td>
+            {% if e.payment_status == "Paid" %}
+                <span class="status paid">Paid</span>
+            {% else %}
+                <span class="status pending">Pending</span>
+            {% endif %}
+        </td>
+
+       
+        <td>{{ e.enrollment_date|date:"d-m-Y H:i" }}</td>
+
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5" class="empty">No enrollments found</td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+        </table>
+    </div>
 
 </div>
 
