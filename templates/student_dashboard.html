@@ -32,10 +32,12 @@
 
     <div class="welcome-card">
         <h1>Welcome, {{ student_name }}</h1>
-        <p>Track your courses, payments and invoices in one place.</p>
+        <p>Overview of your courses and payments.</p>
     </div>
 
+    <!-- STATS -->
     <div class="stats-container">
+
         <div class="stat-card">
             <h3>Total Courses</h3>
             <p>{{ total_courses }}</p>
@@ -45,17 +47,28 @@
             <h3>Total Spent</h3>
             <p>₹ {{ total_spent }}</p>
         </div>
+
+        <div class="stat-card pending">
+            <h3>Pending Amount</h3>
+            <p>₹ {{ pending_amount }}</p>
+        </div>
+
     </div>
 
+    <!-- QUICK NAV -->
+    <div style="margin-bottom:15px;">
+        <a href="{% url 'payment_history' %}" class="btn">View Payment History →</a>
+    </div>
+
+    <!-- TABLE -->
     <table>
         <thead>
             <tr>
                 <th>Course</th>
-                <th>Price</th>
                 <th>Total</th>
-                <th>Payment Status</th>
-                <th>Enrolled On</th>
-                <th>Invoice</th>
+                <th>Status</th>
+                <th>Enrolled</th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -63,8 +76,7 @@
             {% for e in enrollments %}
             <tr>
                 <td>{{ e.course_title }}</td>
-                <td>{{ e.price }}</td>
-                <td>{{ e.total }}</td>
+                <td>₹ {{ e.total }}</td>
 
                 <td>
                     {% if e.payment_status == "Paid" %}
@@ -74,11 +86,15 @@
                     {% endif %}
                 </td>
 
-                <td>{{ e.enrolled_on|date:"d-m-Y H:i" }}</td>
+                <td>{{ e.enrolled_on|date:"d M Y" }}</td>
 
                 <td>
                     {% if e.invoice_id %}
-                        <a href="{% url 'view_invoice' e.invoice_id %}" class="btn">View</a>
+                        {% if e.payment_status == "Pending" %}
+                            <a href="{% url 'pay_now' e.invoice_id %}" class="btn pay-btn">Pay Now</a>
+                        {% else %}
+                            <a href="{% url 'view_invoice' e.invoice_id %}" class="btn">Invoice</a>
+                        {% endif %}
                     {% else %}
                         -
                     {% endif %}
@@ -87,13 +103,7 @@
 
             {% empty %}
             <tr>
-                <td colspan="6">
-                    <div class="empty-state">
-                        <h3>No enrollments yet</h3>
-                        <p>Start learning by enrolling in a course.</p>
-                        <a href="{% url 'course_list' %}" class="btn">Browse Courses</a>
-                    </div>
-                </td>
+                <td colspan="5">No enrollments yet</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -104,3 +114,4 @@
 <script src="{% static 'js/dashboard.js' %}"></script>
 </body>
 </html>
+
