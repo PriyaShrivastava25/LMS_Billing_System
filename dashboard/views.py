@@ -4,14 +4,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from enrollments.models import Enrollment
-from billing.models import Invoice
+from billing.models import Invoice, Payment
 from resources.models import Course
+import uuid
+
+
 
 # HOME
+
 def home(request):
     return render(request, 'home.html')
 
+
+
 # LOGIN 
+
 def login_view(request):
 
     if request.method == "POST":
@@ -34,7 +41,10 @@ def login_view(request):
 
     return render(request, "login.html")
 
+
+
 # SIGNUP
+
 def signup(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -69,7 +79,9 @@ def signup(request):
     return render(request, "signup.html")
 
 
+
 # STUDENT DASHBOARD
+
 @login_required
 def student_dashboard(request):
 
@@ -81,20 +93,28 @@ def student_dashboard(request):
 
     enrollment_data = []
     total_spent = 0
+    pending_amount = 0
 
     for e in enrollments:
         gst = (e.course.price * 18) / 100
         total = e.course.price + gst
-        total_spent += total
 
         invoice = Invoice.objects.filter(enrollment=e).first()
+
+        
+        if invoice and invoice.payment_status == "Paid":
+            total_spent += total
+            status = "Paid"
+        else:
+            pending_amount += total
+            status = "Pending"
 
         enrollment_data.append({
             'course_title': e.course.title,
             'price': e.course.price,
             'gst': gst,
             'total': total,
-            'payment_status': e.payment_status,
+            'payment_status': status,
             'enrolled_on': e.enrollment_date,
             'invoice_id': invoice.id if invoice else None
         })
@@ -103,13 +123,16 @@ def student_dashboard(request):
         'student_name': student.first_name,
         'enrollments': enrollment_data,
         'total_courses': enrollments.count(),
-        'total_spent': total_spent
+        'total_spent': total_spent,
+        'pending_amount': pending_amount
     }
 
     return render(request, 'student_dashboard.html', context)
 
 
+
 # COURSE LIST
+
 @login_required
 def course_list(request):
 
@@ -120,7 +143,9 @@ def course_list(request):
     return render(request, "course_list.html", {"courses": courses})
 
 
-# INVOICE
+
+# VIEW INVOICE
+
 @login_required
 def view_invoice(request, invoice_id):
 
@@ -137,7 +162,77 @@ def view_invoice(request, invoice_id):
 
     return render(request, 'invoice_view.html', {'invoice': invoice})
 
-#LOGOUT
+
+
+# PAY NOW
+
+@login_required
+def pay_now(request, invoice_id):
+
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+
+    
+    if invoice.payment_status == "Paid":
+        messages.warning(request, "Already Paid")
+        return redirect("student_dashboard")
+
+   
+    txn_id = "TXN" + str(uuid.uuid4())[:8]
+
+    
+    Payment.objects.create(
+        invoice=invoice,
+        amount_paid=invoice.total_amount,
+        transaction_id=txn_id
+    )
+
+    invoice.payment_status = "Paid"
+    invoice.save()
+
+    enrollment = invoice.enrollment
+    enrollment.payment_status = "Paid"
+    enrollment.save()
+
+    messages.success(request, "Payment Successful ")
+
+    return redirect("student_dashboard")
+
+
+@login_required
+def payment_history(request):
+
+    payments = Payment.objects.filter(
+        invoice__enrollment__student=request.user
+    ).select_related('invoice__enrollment__course')
+
+    payment_data = []
+    total_paid = 0   
+
+    for p in payments:
+        base = p.invoice.base_amount
+        gst = p.invoice.gst_amount
+        total = p.invoice.total_amount
+
+        total_paid += float(total)   
+
+        payment_data.append({
+            "transaction_id": p.transaction_id,
+            "course": p.invoice.enrollment.course.title,
+            "base": base,
+            "gst": gst,
+            "total": total,
+            "date": p.payment_date
+        })
+
+    return render(request, "payment_history.html", {
+        "payments": payment_data,
+        "total_paid": total_paid   
+    })
+
+
+
+# LOGOUT
+
 def logout_view(request):
     logout(request)
     return redirect("login")

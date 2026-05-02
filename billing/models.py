@@ -1,12 +1,14 @@
 from django.db import models
 from enrollments.models import Enrollment
+import uuid
+
 
 class Invoice(models.Model):
     enrollment = models.ForeignKey(
-    'enrollments.Enrollment',
-    on_delete=models.CASCADE,
-    related_name='invoice'
-)
+        'enrollments.Enrollment',
+        on_delete=models.CASCADE,
+        related_name='invoice'
+    )
     base_amount = models.DecimalField(max_digits=10, decimal_places=2)
     gst_amount = models.DecimalField(max_digits=10, decimal_places=2)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -26,5 +28,12 @@ class Payment(models.Model):
     payment_date = models.DateTimeField(auto_now_add=True)
     amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
 
+    transaction_id = models.CharField(max_length=20, unique=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.transaction_id:
+            self.transaction_id = "TXN" + str(uuid.uuid4())[:8]
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"Payment {self.id}"
+        return f"Payment {self.transaction_id}"

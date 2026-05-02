@@ -3,14 +3,15 @@ from django.contrib.auth.models import User
 from resources.models import Course
 from enrollments.models import Enrollment
 from billing.models import Invoice
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Q
 from django.contrib import messages
 from django.db.models.functions import TruncMonth
 import json
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q 
+
 
 # ADMIN DASHBOARD
+
 @login_required
 def admin_dashboard(request):
 
@@ -21,23 +22,35 @@ def admin_dashboard(request):
     total_courses = Course.objects.count()
     total_enrollments = Enrollment.objects.count()
 
-    total_revenue = Invoice.objects.aggregate(
-        total=Sum('total_amount')
-    )['total'] or 0
+    #  ONLY PAID
+    total_revenue = Invoice.objects.filter(
+        payment_status="Paid"
+    ).aggregate(total=Sum('total_amount'))['total'] or 0
 
-    recent_enrollments = Enrollment.objects.select_related('student', 'course').order_by('-id')[:5]
+    #  PENDING 
+    pending_revenue = Invoice.objects.filter(
+        payment_status="Pending"
+    ).aggregate(total=Sum('total_amount'))['total'] or 0
+
+    recent_enrollments = Enrollment.objects.select_related(
+        'student', 'course'
+    ).order_by('-id')[:5]
 
     context = {
         "total_users": total_users,
         "total_courses": total_courses,
         "total_enrollments": total_enrollments,
         "total_revenue": total_revenue,
+        "pending_revenue": pending_revenue,
         "recent_enrollments": recent_enrollments,
     }
 
     return render(request, "adminpanel/admin_dashboard.html", context)
 
+
+
 # MANAGE COURSES
+
 @login_required
 def manage_courses(request):
     if not request.user.is_staff:
@@ -46,7 +59,8 @@ def manage_courses(request):
     courses = Course.objects.all()
     return render(request, "adminpanel/manage_courses.html", {"courses": courses})
 
-# ADD COURSES
+
+# ADD COURSE
 @login_required
 def add_course(request):
     if not request.user.is_staff:
@@ -71,7 +85,8 @@ def add_course(request):
 
     return render(request, "adminpanel/add_course.html")
 
-# EDIT COURSES
+
+# EDIT COURSE
 @login_required
 def edit_course(request, id):
     if not request.user.is_staff:
@@ -90,7 +105,8 @@ def edit_course(request, id):
 
     return render(request, "adminpanel/edit_course.html", {"course": course})
 
-# DELETE COURSES
+
+# DELETE COURSE
 @login_required
 def delete_course(request, id):
     if not request.user.is_staff:
@@ -100,19 +116,23 @@ def delete_course(request, id):
     course.delete()
     return redirect("manage_courses")
 
+
+
 # MANAGE ENROLLMENTS
+
 @login_required
 def manage_enrollments(request):
     if not request.user.is_staff:
         return redirect("student_dashboard")
 
     enrollments = Enrollment.objects.select_related('student', 'course')
+
     student = request.GET.get('student')
     if student:
-      enrollments = enrollments.filter(
-        Q(student__first_name__icontains=student) |
-        Q(student__last_name__icontains=student)
-    )
+        enrollments = enrollments.filter(
+            Q(student__first_name__icontains=student) |
+            Q(student__last_name__icontains=student)
+        )
 
     course = request.GET.get('course')
     if course:
@@ -122,23 +142,31 @@ def manage_enrollments(request):
         "enrollments": enrollments
     })
 
+
+
 # MANAGE INVOICES
+
 @login_required
 def manage_invoices(request):
     if not request.user.is_staff:
         return redirect("student_dashboard")
 
-    invoices = Invoice.objects.select_related('enrollment__student', 'enrollment__course')
+    invoices = Invoice.objects.select_related(
+        'enrollment__student', 'enrollment__course'
+    )
 
     status = request.GET.get('status')
     if status:
-        invoices = invoices.filter(enrollment__payment_status=status)
+        invoices = invoices.filter(payment_status=status)
 
     return render(request, "adminpanel/manage_invoices.html", {
         "invoices": invoices
     })
 
+
+
 # ANALYTICS DASHBOARD
+
 @login_required
 def analytics_dashboard(request):
     if not request.user.is_staff:
@@ -147,7 +175,7 @@ def analytics_dashboard(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
 
-    invoices = Invoice.objects.all()
+    invoices = Invoice.objects.filter(payment_status="Paid")
 
     if start_date and end_date:
         invoices = invoices.filter(

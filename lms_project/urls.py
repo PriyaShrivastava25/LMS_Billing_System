@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from dashboard.views import home, login_view, signup, student_dashboard, logout_view, view_invoice
+from dashboard.views import home, login_view, signup, student_dashboard, logout_view, view_invoice, pay_now, payment_history
 from resources.views import course_list, enroll_course
 from billing.views import download_invoice
 from django.urls import path, include
@@ -32,6 +32,8 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
      path('invoice/<int:invoice_id>/', view_invoice, name='view_invoice'),
      path('download-invoice/<int:invoice_id>/', download_invoice, name='download_invoice'),
+     path('pay/<int:invoice_id>/', pay_now, name='pay_now'),
+     path('payments/', payment_history, name='payment_history'),
      path('adminpanel/', include('adminpanel.urls')),
 ]
 
