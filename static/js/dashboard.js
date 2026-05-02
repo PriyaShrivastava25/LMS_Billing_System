@@ -1,26 +1,19 @@
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("Student Dashboard Loaded");
+document.addEventListener("DOMContentLoaded", function () {
 
-    const rows = document.querySelectorAll("table tr");
-
-    rows.forEach(row => {
-        row.addEventListener("mouseenter", () => {
-            row.style.transform = "scale(1.01)";
-            row.style.transition = "0.2s";
+    setTimeout(() => {
+        document.querySelectorAll(".popup-message").forEach(msg => {
+            msg.style.display = "none";
         });
+    }, 3000);
 
-        row.addEventListener("mouseleave", () => {
-            row.style.transform = "scale(1)";
+    document.querySelectorAll(".pay-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+
+
+            btn.classList.add("disabled");
+            btn.innerText = "Processing...";
+
         });
     });
+
 });
-
-
-
-setTimeout(function() {
-    let messages = document.querySelectorAll('.popup-message');
-    messages.forEach(function(msg) {
-        msg.style.display = 'none';
-    });
-}, 3000);
-
