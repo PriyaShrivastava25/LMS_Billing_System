@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment History | LMS Billing System</title>
+    <link rel="stylesheet" href="{% static 'css/payment_history.css' %}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>💳 Payment History</h1>
+
+        <div class="summary">
+            <div class="summary-card total">
+                <span>Total Paid</span>
+                <h2>₹ {{ total_paid }}</h2>
+            </div>
+
+            <div class="summary-card count">
+                <span>Transactions</span>
+                <h2>{{ payments|length }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Course</th>
+                    <th>Base Price</th>
+                    <th>GST (18%)</th>
+                    <th>Total Paid</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for p in payments %}
+                <tr>
+                    <td class="txn">{{ p.transaction_id }}</td>
+
+                    <td class="course">
+                        {{ p.course  }}
+                    </td>
+
+                    <td class="amount">Rs. {{ p.base  }}</td>
+                    <td class="gst">Rs. {{ p.gst }}</td>
+                    <td class="amount total">₹ {{ p.total }}</td>
+
+                    <td>{{ p.date |date:"d M Y H:i" }}</td>
+
+                    <td>
+                        <span class="status paid">Paid</span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="empty">
+                        No payments yet
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- BACK BUTTON -->
+    <a href="{% url 'student_dashboard' %}" class="back-btn">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>
