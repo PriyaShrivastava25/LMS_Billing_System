@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 
 
 # ADMIN DASHBOARD
-
 @login_required
 def admin_dashboard(request):
 
@@ -48,9 +47,7 @@ def admin_dashboard(request):
     return render(request, "adminpanel/admin_dashboard.html", context)
 
 
-
 # MANAGE COURSES
-
 @login_required
 def manage_courses(request):
     if not request.user.is_staff:
@@ -119,7 +116,6 @@ def delete_course(request, id):
 
 
 # MANAGE ENROLLMENTS
-
 @login_required
 def manage_enrollments(request):
     if not request.user.is_staff:
@@ -143,9 +139,7 @@ def manage_enrollments(request):
     })
 
 
-
 # MANAGE INVOICES
-
 @login_required
 def manage_invoices(request):
     if not request.user.is_staff:
@@ -164,9 +158,7 @@ def manage_invoices(request):
     })
 
 
-
 # ANALYTICS DASHBOARD
-
 @login_required
 def analytics_dashboard(request):
     if not request.user.is_staff:

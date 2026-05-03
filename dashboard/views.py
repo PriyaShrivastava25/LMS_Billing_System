@@ -11,14 +11,11 @@ import uuid
 
 
 # HOME
-
 def home(request):
     return render(request, 'home.html')
 
 
-
 # LOGIN 
-
 def login_view(request):
 
     if request.method == "POST":
@@ -42,9 +39,7 @@ def login_view(request):
     return render(request, "login.html")
 
 
-
 # SIGNUP
-
 def signup(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -81,7 +76,6 @@ def signup(request):
 
 
 # STUDENT DASHBOARD
-
 @login_required
 def student_dashboard(request):
 
@@ -132,7 +126,6 @@ def student_dashboard(request):
 
 
 # COURSE LIST
-
 @login_required
 def course_list(request):
 
@@ -145,7 +138,6 @@ def course_list(request):
 
 
 # VIEW INVOICE
-
 @login_required
 def view_invoice(request, invoice_id):
 
@@ -163,9 +155,7 @@ def view_invoice(request, invoice_id):
     return render(request, 'invoice_view.html', {'invoice': invoice})
 
 
-
 # PAY NOW
-
 @login_required
 def pay_now(request, invoice_id):
 
@@ -197,7 +187,7 @@ def pay_now(request, invoice_id):
 
     return redirect("student_dashboard")
 
-
+# PAYMENT HISTORY
 @login_required
 def payment_history(request):
 
@@ -232,7 +222,6 @@ def payment_history(request):
 
 
 # LOGOUT
-
 def logout_view(request):
     logout(request)
     return redirect("login")

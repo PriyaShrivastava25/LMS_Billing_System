@@ -37,13 +37,10 @@ def course_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # return render(request, "course_list.html", {"courses": page_obj})
-
     return render(request, "course_list.html", {
     "courses": page_obj,
     "page_obj": page_obj
 })
-
 
 
 

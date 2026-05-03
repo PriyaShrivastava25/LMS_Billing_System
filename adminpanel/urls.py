@@ -11,6 +11,4 @@ urlpatterns = [
     path('invoices/', views.manage_invoices, name='manage_invoices'),
     path('analytics/', views.analytics_dashboard, name='analytics_dashboard'),
 
-
-
 ]
