@@ -134,3 +134,54 @@ button:hover {
         width: 90%;
     }
 }
+@media (max-width: 768px) {
+
+    .main {
+        padding: 15px;
+    }
+
+    .card,
+    .box,
+    .kpi,
+    .chart-box {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+}
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+}
+@media (max-width: 768px) {
+
+    button,
+    .btn {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 6px;
+    }
+}
+@media (max-width: 768px) {
+
+    input,
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+}

@@ -83,8 +83,8 @@
                     </td>
 
                     <td>
-                        <a href="{% url 'view_invoice' i.id %}" class="btn-view">View</a>
-                        <a href="{% url 'download_invoice' i.id %}" class="btn-pdf">PDF</a>
+                        <a href="{% url 'view_invoice' i.id %}" class="btn-view action-buttons" >View</a>
+                        <a href="{% url 'download_invoice' i.id %}" class="btn-pdf action-buttons">PDF</a>
                     </td>
                 </tr>
                 {% empty %}

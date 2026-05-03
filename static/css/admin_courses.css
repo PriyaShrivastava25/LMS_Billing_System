@@ -22,14 +22,15 @@ body {
 
 
 .sidebar {
-    width: 230px;
-    height: 100vh;
+    width: 250px;
+    min-height: 100vh;
     background: #1e293b;
     color: white;
     padding: 20px;
     display: flex;
     flex-direction: column;
 }
+
 
 .sidebar h2 {
     margin-bottom: 30px;
@@ -62,9 +63,10 @@ body {
 
 
 .main {
-    flex: 1;
-    padding: 30px;
+    margin-left: 250px;
+    padding: 20px;
 }
+
 
 
 .topbar {
@@ -100,11 +102,14 @@ body {
     border-radius: 12px;
     padding: 15px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    width: 100%;
+    overflow-x: auto;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 600px;
 }
 
 th {
@@ -163,7 +168,10 @@ tr:hover {
     padding: 6px 12px;
     border-radius: 6px;
     text-decoration: none;
+    
 }
+
+
 
 .btn-delete {
     background: #ef4444;
@@ -171,7 +179,15 @@ tr:hover {
     padding: 6px 12px;
     border-radius: 6px;
     text-decoration: none;
+    
 }
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 
 .btn-edit:hover,
 .btn-delete:hover {
@@ -183,4 +199,88 @@ tr:hover {
     padding: 20px;
     text-align: center;
     color: #64748b;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        min-height: auto;
+        position: relative;
+    }
+}
+
+@media (max-width: 768px) {
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-buttons button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    table {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .main {
+        padding: 15px;
+    }
+
+    .card,
+    .box,
+    .kpi,
+    .chart-box {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+}
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+}
+@media (max-width: 768px) {
+
+    button,
+    .btn {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 6px;
+    }
+}
+@media (max-width: 768px) {
+
+    input,
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
 }
