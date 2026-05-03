@@ -214,3 +214,23 @@
     background: #fff7ed;
     color: #9a3412;
 }
+
+@media screen and (max-width: 768px) {
+
+    .cards {
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+}

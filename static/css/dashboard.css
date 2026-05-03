@@ -4,7 +4,6 @@ body{
     margin: 0;
 }
 
-/* NAVBAR */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -60,12 +59,10 @@ body{
     color: black;
 }
 
-/* CONTAINER */
 .dashboard-container {
     padding: 40px;
 }
 
-/* TABLE */
 table {
     width: 100%;
     background: white;
@@ -85,7 +82,6 @@ td {
     text-align: center;
 }
 
-/* BUTTON */
 .btn {
     background: #3b82f6;
     color: white;
@@ -98,13 +94,11 @@ td {
     background: #2563eb;
 }
 
-/* DISABLED BUTTON */
 .btn.disabled {
     background: gray;
     pointer-events: none;
 }
 
-/* STATUS */
 .status {
     padding: 5px 12px;
     border-radius: 20px;
@@ -121,7 +115,6 @@ td {
     color: #dc2626;
 }
 
-/* POPUP CENTER */
 #message-container {
     position: fixed;
     top: 20px;
@@ -136,7 +129,6 @@ td {
     border-radius: 8px;
 }
 
-/* LOADER */
 .loader {
     display: none;
     margin-top: 10px;
@@ -162,20 +154,15 @@ td {
 }
 
 
-/* ========================= */
-/* CLEAN & COMPACT STATS */
-/* ========================= */
-
 .stats-container {
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
-    justify-content: flex-start; /* left aligned */
+    justify-content: flex-start; 
 }
 
-/* CARD */
 .stat-card {
-    width: 220px;   /* 🔥 fixed width (no more stretch) */
+    width: 220px;   
     display: flex;
     align-items: center;
     gap: 12px;
@@ -187,12 +174,11 @@ td {
     transition: 0.25s;
 }
 
-/* HOVER */
+
 .stat-card:hover {
     transform: translateY(-3px);
 }
 
-/* ICON */
 .stat-icon {
     font-size: 22px;
     background: #f1f5f9;
@@ -200,7 +186,7 @@ td {
     border-radius: 10px;
 }
 
-/* TEXT */
+
 .stat-card h3 {
     margin: 0;
     font-size: 13px;
@@ -250,21 +236,49 @@ td {
     color: #1e293b;
 }
 
-/* Revenue */
+
 .card.revenue {
     background: #ecfdf5;
     color: #065f46;
 }
 
-/* Pending */
+
 .card.pending {
     background: #fff7ed;
     color: #9a3412;
 }
-
 
 @keyframes bounce {
     to {
         transform: translateY(-8px);
     }
 }
+
+@media screen and (max-width: 768px) {
+
+    .dashboard-container {
+        padding: 15px;
+    }
+
+    .stats-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .stat-card {
+        width: 100%;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
+
