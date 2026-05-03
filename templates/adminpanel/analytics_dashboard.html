@@ -31,8 +31,9 @@
     <!-- FILTER -->
     <div class="filter-box">
         <form method="GET">
-            <input type="date" name="start_date" value="{{ start_date }}">
-            <input type="date" name="end_date" value="{{ end_date }}">
+            <input type="date" name="start_date" value="{{ start_date|default:'' }}">
+            <input type="date" name="end_date" value="{{ end_date|default:'' }}">
+
             <button type="submit">Apply Filter</button>
         </form>
     </div>
