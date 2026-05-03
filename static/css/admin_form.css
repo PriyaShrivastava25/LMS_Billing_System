@@ -1,4 +1,15 @@
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 body {
     margin: 0;
     height: 100vh;
@@ -6,10 +17,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    
     background: linear-gradient(120deg, #1f2a44, #2c5364, #4facfe);
     position: relative;
-    overflow: hidden;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 
